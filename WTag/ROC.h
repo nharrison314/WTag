@@ -21,7 +21,7 @@ namespace WTag
     virtual ~ROC() ;
     
     StatusCode initialize();
-    StatusCode execute (const xAOD::EventInfo* eventInfo, const xAOD::JetContainer* in_jetslargeR, const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, const float eventWeight);
+    StatusCode execute (const xAOD::EventInfo* eventInfo, const xAOD::JetContainer* in_ffjets, const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, const float eventWeight);
     
     std::string m_decor_jetTags_b   = "", // isB,                          
       m_decor_jetTags_top = "", // isTop,                                               

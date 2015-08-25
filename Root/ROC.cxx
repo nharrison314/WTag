@@ -74,7 +74,7 @@ StatusCode WTag::ROC::initialize () {
   return EL::StatusCode::SUCCESS;
 }
 
-StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetContainer* in_jetsLargeR,const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, float eventWeight)
+StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetContainer* in_ffjets,const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, float eventWeight)
 {
   std::cout <<"Executing ROC" << std::endl;
   //static SG::AuxElement::ConstAccessor<float> Wlabel("Wlabel");
@@ -135,16 +135,16 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //{
   //  numlargeRjets++;
   //}
-  std::cout << "# large R jets: " << in_jetsLargeR->size() << std::endl;
+  std::cout << "# fat jets: " << in_ffjets->size() << std::endl;
   std::cout << "HERE 1" << std::endl;
-  for(const auto jet: *in_jetsLargeR)
+  for(const auto jet: *in_ffjets)
     {
-      std::cout << "within in_jetsLargeR" <<std::endl;
+      std::cout << "within in_ffjets" <<std::endl;
       float jetmass_1 =0;
       float jetmass_2=0;
       float jetmass_3=0;
       float jetmass_4=0;
-      std::cout << "Inside largeRjets container" << std::endl;
+      std::cout << "Inside FFjets container" << std::endl;
       bool signalW = false;
       i++;
       std::cout << "i: " << i << std::endl;

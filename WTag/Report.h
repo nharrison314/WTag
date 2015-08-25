@@ -29,6 +29,7 @@ public:
   bool m_debug = false;
   std::string m_eventInfo       = "EventInfo",
               m_inputLargeRJets       = "",
+              m_inputFFJets = "",
               m_inputJets      = "",
               m_inputMET        = "MET_RefFinal",
               m_inputMETName    = "Final",

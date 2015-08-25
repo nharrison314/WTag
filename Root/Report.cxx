@@ -201,6 +201,7 @@ EL::StatusCode Report :: execute ()
   if(m_debug) Info("execute()", "Calling execute...");
   const xAOD::EventInfo*                eventInfo     (nullptr);
   const xAOD::JetContainer*             in_jetsLargeR (nullptr);
+  const xAOD::JetContainer*             in_ffjets     (nullptr);
   const xAOD::JetContainer*             in_jets       (nullptr);
   const xAOD::MissingETContainer*       in_missinget  (nullptr);
   const xAOD::ElectronContainer*        in_electrons  (nullptr);
@@ -208,13 +209,15 @@ EL::StatusCode Report :: execute ()
   const xAOD::TauJetContainer*          in_taus       (nullptr);
   const xAOD::PhotonContainer*          in_photons    (nullptr);
   const xAOD::TruthParticleContainer*   truth_particles    (nullptr);
-
+  
   // start grabbing all the containers that we can
   RETURN_CHECK("Report::execute()", HF::retrieve(eventInfo,    m_eventInfo,        m_event, m_store, m_debug), "Could not get the EventInfo container.");
   if(!m_inputJets.empty())
     RETURN_CHECK("Report::execute()", HF::retrieve(in_jets,     m_inputJets,       m_event, m_store, m_debug), "Could not get the inputJets container.");
   if(!m_inputLargeRJets.empty())
     RETURN_CHECK("Report::execute()", HF::retrieve(in_jetsLargeR,      m_inputLargeRJets,        m_event, m_store, m_debug), "Could not get the inputLargeRJets container.");
+  if(!m_inputFFJets.empty())
+    RETURN_CHECK("Report::execute()",HF::retrieve(in_ffjets, m_inputFFJets, m_event, m_store, m_debug), "Could not get the inputFFJets container.");
   if(!m_inputMET.empty())
     RETURN_CHECK("Report::execute()", HF::retrieve(in_missinget, m_inputMET,         m_event, m_store, m_debug), "Could not get the inputMET container.");
   if(!m_inputElectrons.empty())
@@ -228,11 +231,11 @@ EL::StatusCode Report :: execute ()
   if(!m_truthParticles.empty())
     {
       std::cout << "!m_truthParticles.empty()" << std::endl;
-    RETURN_CHECK("Report::execute()", HF::retrieve(truth_particles, m_truthParticles, m_event, m_store, m_debug),"Could not get truth particle container.");
+      RETURN_CHECK("Report::execute()", HF::retrieve(truth_particles, m_truthParticles, m_event, m_store, m_debug),"Could not get truth particle container.");
     }
   // prepare the jets by creating a view container to look at them
   ConstDataVector<xAOD::JetContainer> in_jetsCDV(SG::VIEW_ELEMENTS);
-
+  //ConstDataVector<xAOD::JetContainer> in_ffjetsCDV(SG::VIEW_ELEMENTS);
   if(!m_inputJets.empty()){
     for(auto jet: *in_jets){
       if(jet->pt()/1.e3 < m_jet_minPtView) continue;
@@ -243,23 +246,25 @@ EL::StatusCode Report :: execute ()
     in_jets = in_jetsCDV.asDataVector();
   }
 
-  ConstDataVector<xAOD::JetContainer> in_jetsLargeRCDV(SG::VIEW_ELEMENTS);
+  //ConstDataVector<xAOD::JetContainer> in_jetsLargeRCDV(SG::VIEW_ELEMENTS);
+  ConstDataVector<xAOD::JetContainer> in_ffjetsRCDV(SG::VIEW_ELEMENTS);
   int i  =0;
-  if(m_inputLargeRJets.empty()){
-    std::cout << "EMPTY" << std::endl;
-  }
- if(!m_inputLargeRJets.empty()){
-   std::cout << "NOT EMPTY" <<std::endl;
-   for(auto jet: *in_jetsLargeR){
+  //if(m_inputLargeRJets.empty()){
+  // std::cout << "EMPTY" << std::endl;
+  //}
+  //if(!m_inputLargeRJets.empty()){
+  if(!m_inputFFJets.empty()){
+    std::cout << "NOT EMPTY" <<std::endl;
+    for(auto jet: *in_ffjets){
+    //for(auto jet: *in_jetsLargeR){
       if(jet->pt()/1.e3 < m_jetLargeR_minPtView) continue;
       if(fabs(jet->eta()) > m_jetLargeR_maxAbsEtaView) continue;
-      in_jetsLargeRCDV.push_back(jet);
-      i++;
+      //in_jetsLargeRCDV.push_back(jet);
+      in_ffjetsRCDV.push_back(jet);
     }
-    std::cout << "making in_jetsLargeR" << std::endl;
-    std::cout << "there are " << i << " large R jets (at Report level)" << std::endl;
+    
     // make in_jetsLargeR point to a view instead
-    in_jetsLargeR = in_jetsLargeRCDV.asDataVector();
+    in_ffjets = in_ffjetsRCDV.asDataVector();
   }
 
 

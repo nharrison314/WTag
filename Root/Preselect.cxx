@@ -72,6 +72,7 @@ EL::StatusCode Preselect :: execute ()
   if(m_debug) Info("execute()", "Calling execute...");
   const xAOD::EventInfo*                eventInfo     (nullptr);
   const xAOD::JetContainer*             in_jetsLargeR (nullptr);
+  const xAOD::JetContainer*             in_ffjets     (nullptr);
   const xAOD::JetContainer*             in_jets       (nullptr);
   const xAOD::MissingETContainer*       in_missinget  (nullptr);
   const xAOD::ElectronContainer*        in_electrons  (nullptr);
@@ -86,6 +87,9 @@ EL::StatusCode Preselect :: execute ()
     RETURN_CHECK("Preselect::execute()", HF::retrieve(in_jets,     m_inputJets,       m_event, m_store, m_debug), "Could not get the inputJets container.");
   if(!m_inputLargeRJets.empty())
     RETURN_CHECK("Preselect::execute()", HF::retrieve(in_jetsLargeR,      m_inputLargeRJets,        m_event, m_store, m_debug), "Could not get the inputLargeRJets container.");
+  if(!m_inputFFJets.empty())
+    RETURN_CHECK("Preselect::execute()", HF::retrieve(in_ffjets, m_inputFFJets, m_event, m_store, m_debug), "Could not get the inputFFJet container.");
+
   if(!m_inputMET.empty())
     RETURN_CHECK("Preselect::execute()", HF::retrieve(in_missinget, m_inputMET,         m_event, m_store, m_debug), "Could not get the inputMET container.");
   if(!m_inputElectrons.empty())
@@ -123,10 +127,11 @@ EL::StatusCode Preselect :: execute ()
   }
 
   static SG::AuxElement::Decorator< int > pass_preSel("pass_preSel");
-
-  if(!m_inputLargeRJets.empty()){
+  if(!m_inputFFJets.empty()){
+  //if(!m_inputLargeRJets.empty()){
     int num_passJetsLargeR = 0;
-    for(const auto jet: *in_jetsLargeR){
+    for(const auto jet: *in_ffjets){
+    //    for(const auto jet: *in_jetsLargeR){
       pass_preSel(*jet) = 0;
       if(jet->pt()/1000.  < m_jetLargeR_minPt)  continue;
       if(jet->pt()/1000.  > m_jetLargeR_maxPt)  continue;
