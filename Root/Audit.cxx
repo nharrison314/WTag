@@ -228,7 +228,7 @@ EL::StatusCode Audit :: execute ()
   I2_depth_decor(*eventInfo)            = -99;
   V1_nelements_decor(*eventInfo)        = -99;
   V2_nelements_decor(*eventInfo)        = -99;
-  isWlabel                              = false;
+  //isWlabel                              = false;
 
 
   // clear the event

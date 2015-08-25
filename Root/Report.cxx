@@ -264,7 +264,7 @@ EL::StatusCode Report :: execute ()
 
 
   //RETURN_CHECK("Report::execute()", m_RazorPlots["all/razor"]->execute(eventInfo, in_met,in_jets, in_jetsLargeR, in_muons, in_electrons,eventWeight),"");
-  RETURN_CHECK("Report::execite()", m_ROCPlots["all/roc"]->execute(eventInfo, in_jetsLargeR, in_jets, in_met, truth_particles,eventWeight),"");
+  RETURN_CHECK("Report::execute()", m_ROCPlots["all/roc"]->execute(eventInfo, in_jetsLargeR, in_jets, truth_particles,eventWeight),"");
 
   if(!m_inputJets.empty()){
     RETURN_CHECK("Report::execute()", m_jetKinematicPlots["all/jets"]->execute(in_jets, eventWeight), "");

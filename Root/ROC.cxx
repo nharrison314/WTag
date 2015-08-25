@@ -12,6 +12,7 @@
 #include "xAODTau/TauJetContainer.h"
 #include "xAODTruth/TruthParticleContainer.h"
 #include "xAODMissingET/MissingETContainer.h"
+
 //#include "xAODBTaggingEfficiency/BTaggingEfficiencyTool.h"                                    
 #include "xAODBTagging/BTagging.h"
 #include "JetSubStructureUtils/BosonTag.h"
@@ -32,6 +33,7 @@
 using namespace std;
 
 namespace HF = HelperFunctions;
+//namespace VD = VariableDefinitions;
 
 WTag::ROC::ROC (std::string name) :
   HistogramManager(name,"")
@@ -75,7 +77,7 @@ StatusCode WTag::ROC::initialize () {
   return EL::StatusCode::SUCCESS;
 }
 
-StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetContainer* in_jetsLargeR,const xAOD::JetContainer* in_jets, xAOD::MissingETContainer* in_missinget, const xAOD::TruthParticleContainer* truth_particles, float eventWeight)
+StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetContainer* in_jetsLargeR,const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, float eventWeight)
 {
   //static SG::AuxElement::ConstAccessor<float> Wlabel("Wlabel");
 
@@ -114,21 +116,8 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //const xAOD::MissingET* in_met(nullptr);
   //if(!m_inputMET.empty()){
     // retrieve CalibMET_RefFinal for METContainer                                                 
-  // xAOD::MissingETContainer::const_iterator met_id = in_missinget->find(m_inputMETName);
-  //if (met_id == in_missinget->end()) {
-  //  Error("execute()", "No %s inside MET container", m_inputMETName.c_str());
-  //  return EL::StatusCode::FAILURE;
-  // }
-    // dereference the iterator since it's just a single object                                    
-    //in_met = *met_id;
-  //}
+  //xAOD::MissingETContainer::const_iterator met_id = in_missinget->find(m_inputMETName);
 
-  // create a vector to hold the group element ids for when adding jets                            
-  //std::map<const RF::GroupElementID, const xAOD::Jet*> in_jets_IDs;
-  for(const auto jet: *in_jets)
-    {
-      in_jets_IDs[VIS.AddLabFrameFourVector( jet->p4() )] = jet;
-    }
   //totalEvents = totalEvents + 1;
   //bool isWTagged = false;
   //tags jets that are likely W boson.                                                             
@@ -150,31 +139,31 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //}
   for(const auto jet: *in_jetsLargeR)
     {
-      //bool signalW = false;
+      bool signalW = false;
       i++;
       if (i==1)
 	{
 	  jetmass_1= jet->m()/1.e3;
 	  if (jetmass_1 > 0)
-	    jetmass1->Fill(jetmass_1);
+	    jetmass1->Fill(jetmass_1, eventWeight);
 	}
       else if (i==2)
 	{
 	  jetmass_2 = jet->m()/1.e3;
 	  if (jetmass_2 > 0)
-	    jetmass2->Fill(jetmass_2);
+	    jetmass2->Fill(jetmass_2, eventWeight);
 	}
       else if (i==3)
 	{
 	  jetmass_3 = jet->m()/1.e3;
 	  if (jetmass_3 > 0)
-	    jetmass3->Fill(jetmass_3);
+	    jetmass3->Fill(jetmass_3, eventWeight);
 	}
       else
 	{
 	  jetmass_4 = jet->m()/1.e3;
 	  if (jetmass_4 > 0)
-	    jetmass4->Fill(jetmass_4);
+	    jetmass4->Fill(jetmass_4, eventWeight);
 	}
       
       
@@ -190,13 +179,13 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
       }
       
       if (i ==1 && signalW)
-	jetmass1_Wlabel->Fill(jetmass_1);
+	jetmass1_Wlabel->Fill(jetmass_1, eventWeight);
       else if (i == 2 && signalW)
-	jetmass2_Wlabel->Fill(jetmass_2);
+	jetmass2_Wlabel->Fill(jetmass_2, eventWeight);
       else if (i == 3 && signalW)
-	jetmass3_Wlabel->Fill(jetmass_3);
+	jetmass3_Wlabel->Fill(jetmass_3, eventWeight);
       else if (i == 4 && signalW)
-	jetmass4_Wlabel->Fill(jetmass_4);
+	jetmass4_Wlabel->Fill(jetmass_4, eventWeight);
 
       // if (isTruthW && isWTagged)
       //	positive = positive + 1;
