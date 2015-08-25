@@ -90,7 +90,8 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //const xAOD::PhotonContainer*          in_photons    (nullptr);
   //const xAOD::TruthParticleContainer*   truth_particles  (nullptr);      
 
-  static JetSubStructureUtils::BosonTag WTagger("medium", "smooth", "$ROOTCOREBIN/data/JetSubStructureUtils/config_13TeV_20150528_Wtagging.dat", true, true);     
+  std::cout <<"Before Boson Tagger" << std::endl;
+  static JetSubStructureUtils::BosonTag WTagger("medium", "smooth", "$ROOTCOREBIN/data/JetSubStructureUtils/config_13TeV_20150528_Wtagging.dat", true, true);   std::cout <<" After Boson Tager" << std::endl;  
 
   //RETURN_CHECK("Audit::execute()", HF::retrieve(eventInfo,    m_eventInfo,        m_event, m_store, m_debug), "Could not get the EventInfo container.");
   // if(!m_inputLargeRJets.empty())
@@ -135,7 +136,9 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //{
   //  numlargeRjets++;
   //}
-  std::cout << "# fat jets: " << in_ffjets->size() << std::endl;
+  
+
+  //std::cout << "# fat jets: " << in_ffjets->size() << std::endl;
   std::cout << "HERE 1" << std::endl;
   for(const auto jet: *in_ffjets)
     {

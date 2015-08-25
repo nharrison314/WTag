@@ -173,8 +173,8 @@ EL::StatusCode Audit :: execute ()
   RETURN_CHECK("Audit::execute()", HF::retrieve(eventInfo,    m_eventInfo,        m_event, m_store, m_debug), "Could not get the EventInfo container.");
   if(!m_inputLargeRJets.empty())
     RETURN_CHECK("Audit::execute()", HF::retrieve(in_jetsLargeR,      m_inputLargeRJets,        m_event, m_store, m_debug), "Could not get the inputLargeRJets container.");
-  if(!m_inputFFJets.empty())
-    RETURN_CHECK("Audit::execute()", HF::retrieve(in_ffjets, m_inputFFJets, m_event, m_store, m_debug), "Could not get the inputFFJets container");
+  if(!m_inputFinalFatJets.empty())
+    RETURN_CHECK("Audit::execute()", HF::retrieve(in_ffjets, m_inputFinalFatJets, m_event, m_store, m_debug), "Could not get the inputFinalFatJets container");
   if(!m_inputJets.empty())
     RETURN_CHECK("Audit::execute()", HF::retrieve(in_jets,     m_inputJets,       m_event, m_store, m_debug), "Could not get the inputJets container.");
   if(!m_inputMET.empty())
