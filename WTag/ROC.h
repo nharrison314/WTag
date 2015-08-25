@@ -8,6 +8,7 @@
 #include "xAODEventInfo/EventInfo.h"
 #include "xAODMissingET/MissingETContainer.h"
 #include "xAODJet/JetContainer.h"
+#include "xAODTruth/TruthParticleContainer.h"
 #include <string>
 
 namespace WTag
@@ -20,31 +21,16 @@ namespace WTag
     virtual ~ROC() ;
     
     StatusCode initialize();
-    StatusCode execute (const xAOD::EventInfo* eventInfo, float eventWeight);
+    StatusCode execute (const xAOD::EventInfo* eventInfo, const xAOD::JetContainer* in_jetslargeR, const xAOD::JetContainer* in_jets, const xAOD::MissingETContainer* in_missinget, const xAOD::TruthParticleContainer* truth_particles, const float eventWeight);
     
-    bool m_passPreSel        = true;
-    bool m_debug = false;
-    std::string m_eventInfo       = "EventInfo",
-      m_inputLargeRJets       = "",
-      m_inputJets      = "",
-      m_inputMET        = "MET_RefFinal",
-      m_inputMETName    = "Final",
-      m_inputElectrons  = "",
-      m_inputMuons      = "",
-      m_inputTauJets    = "",
-      m_inputPhotons    = "",
-      m_truth           = "";
-    std::string m_decor_jetTags_b   = "", // isB,                                                 
+    std::string m_decor_jetTags_b   = "", // isB,                          
       m_decor_jetTags_top = "", // isTop,                                               
       m_decor_jetTags_w   = ""; // isW;                                         
 
     using HistogramManager::book;
     using HistogramManager::execute;
   
-  private:
-    xAOD::TEvent *m_event; //!                                                                    
-    xAOD::TStore *m_store; //!   
-    
+  private:    
     //float positive, fake, totalEvents, trueRate, fakeRate;
     TH1F* jetmass1;
     TH1F* jetmass2;

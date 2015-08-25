@@ -3,6 +3,7 @@
 #include <EventLoop/Worker.h>
 #include <WTag/Report.h>
 
+
 // Infrastructure includes
 #include "xAODRootAccess/Init.h"
 
@@ -201,7 +202,7 @@ EL::StatusCode Report :: execute ()
   const xAOD::MuonContainer*            in_muons      (nullptr);
   const xAOD::TauJetContainer*          in_taus       (nullptr);
   const xAOD::PhotonContainer*          in_photons    (nullptr);
-  //const xAOD::TruthParticleContainer*   in_truth    (nullptr);
+  const xAOD::TruthParticleContainer*   truth_particles    (nullptr);
 
   // start grabbing all the containers that we can
   RETURN_CHECK("Report::execute()", HF::retrieve(eventInfo,    m_eventInfo,        m_event, m_store, m_debug), "Could not get the EventInfo container.");
@@ -219,6 +220,8 @@ EL::StatusCode Report :: execute ()
     RETURN_CHECK("Report::execute()", HF::retrieve(in_taus,      m_inputTauJets,     m_event, m_store, m_debug), "Could not get the inputTauJets container.");
   if(!m_inputPhotons.empty())
     RETURN_CHECK("Report::execute()", HF::retrieve(in_photons,   m_inputPhotons,     m_event, m_store, m_debug), "Could not get the inputPhotons container.");
+  if(!m_truthParticles.empty())
+    RETURN_CHECK("Report::execute()", HF::retrieve(truth_particles, m_truthParticles, m_event, m_store, m_debug),"Could not get truth particle container.");
 
   // prepare the jets by creating a view container to look at them
   ConstDataVector<xAOD::JetContainer> in_jetsCDV(SG::VIEW_ELEMENTS);
@@ -261,7 +264,7 @@ EL::StatusCode Report :: execute ()
 
 
   //RETURN_CHECK("Report::execute()", m_RazorPlots["all/razor"]->execute(eventInfo, in_met,in_jets, in_jetsLargeR, in_muons, in_electrons,eventWeight),"");
-  RETURN_CHECK("Report::execite()", m_ROCPlots["all/roc"]->execute(eventInfo, in_met,in_jets, in_jetsLargeR, in_muons, in_electrons,eventWeight),"");
+  RETURN_CHECK("Report::execite()", m_ROCPlots["all/roc"]->execute(eventInfo, in_jetsLargeR, in_jets, in_met, truth_particles,eventWeight),"");
 
   if(!m_inputJets.empty()){
     RETURN_CHECK("Report::execute()", m_jetKinematicPlots["all/jets"]->execute(in_jets, eventWeight), "");

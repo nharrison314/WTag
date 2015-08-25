@@ -14,6 +14,7 @@
 #include <WTag/JetMETHists.h>
 #include <WTag/METHists.h>
 #include <WTag/JetTagHists.h>
+#include <WTag/ROC.h>
 
 //#include <WTag/RazorVariableHists.h>
 class Report : public EL::Algorithm
@@ -34,7 +35,8 @@ public:
               m_inputElectrons  = "",
               m_inputMuons      = "",
               m_inputTauJets    = "",
-              m_inputPhotons    = "";
+              m_inputPhotons    = "",
+              m_truthParticles  = "";
   std::string m_decor_jetTags_b   = "", // isB,
               m_decor_jetTags_top = "", // isTop,
               m_decor_jetTags_w   = ""; // isW;
