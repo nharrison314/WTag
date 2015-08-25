@@ -123,10 +123,10 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //  {                                                                                            
   //    isWTagged = WTagger.result(*jet);                                                     
   //  } 
-  float jetmass_1 =0;
-  float jetmass_2=0; 
-  float jetmass_3=0; 
-  float jetmass_4=0;
+  //float jetmass_1 =0;
+  //float jetmass_2=0; 
+  //float jetmass_3=0; 
+  //float jetmass_4=0;
   int i=0;
   //int j=0;
   //int numlargeRjets = 0;
@@ -135,13 +135,23 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
   //{
   //  numlargeRjets++;
   //}
+  std::cout << "# large R jets: " << in_jetsLargeR->size() << std::endl;
+  std::cout << "HERE 1" << std::endl;
   for(const auto jet: *in_jetsLargeR)
     {
+      std::cout << "within in_jetsLargeR" <<std::endl;
+      float jetmass_1 =0;
+      float jetmass_2=0;
+      float jetmass_3=0;
+      float jetmass_4=0;
+      std::cout << "Inside largeRjets container" << std::endl;
       bool signalW = false;
       i++;
+      std::cout << "i: " << i << std::endl;
       if (i==1)
 	{
 	  jetmass_1= jet->m()/1.e3;
+	  std::cout << "Jetmass_1: " << jetmass_1 << " GeV" <<std::endl;
 	  if (jetmass_1 > 0)
 	    jetmass1->Fill(jetmass_1, eventWeight);
 	}

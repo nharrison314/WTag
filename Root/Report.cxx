@@ -226,8 +226,10 @@ EL::StatusCode Report :: execute ()
   if(!m_inputPhotons.empty())
     RETURN_CHECK("Report::execute()", HF::retrieve(in_photons,   m_inputPhotons,     m_event, m_store, m_debug), "Could not get the inputPhotons container.");
   if(!m_truthParticles.empty())
+    {
+      std::cout << "!m_truthParticles.empty()" << std::endl;
     RETURN_CHECK("Report::execute()", HF::retrieve(truth_particles, m_truthParticles, m_event, m_store, m_debug),"Could not get truth particle container.");
-
+    }
   // prepare the jets by creating a view container to look at them
   ConstDataVector<xAOD::JetContainer> in_jetsCDV(SG::VIEW_ELEMENTS);
 
@@ -242,12 +244,20 @@ EL::StatusCode Report :: execute ()
   }
 
   ConstDataVector<xAOD::JetContainer> in_jetsLargeRCDV(SG::VIEW_ELEMENTS);
-  if(!m_inputLargeRJets.empty()){
-    for(auto jet: *in_jetsLargeR){
+  int i  =0;
+  if(m_inputLargeRJets.empty()){
+    std::cout << "EMPTY" << std::endl;
+  }
+ if(!m_inputLargeRJets.empty()){
+   std::cout << "NOT EMPTY" <<std::endl;
+   for(auto jet: *in_jetsLargeR){
       if(jet->pt()/1.e3 < m_jetLargeR_minPtView) continue;
       if(fabs(jet->eta()) > m_jetLargeR_maxAbsEtaView) continue;
       in_jetsLargeRCDV.push_back(jet);
+      i++;
     }
+    std::cout << "making in_jetsLargeR" << std::endl;
+    std::cout << "there are " << i << " large R jets (at Report level)" << std::endl;
     // make in_jetsLargeR point to a view instead
     in_jetsLargeR = in_jetsLargeRCDV.asDataVector();
   }
@@ -270,7 +280,7 @@ EL::StatusCode Report :: execute ()
 
   //RETURN_CHECK("Report::execute()", m_RazorPlots["all/razor"]->execute(eventInfo, in_met,in_jets, in_jetsLargeR, in_muons, in_electrons,eventWeight),"");
   RETURN_CHECK("Report::execute()", m_ROCPlots["all/roc"]->execute(eventInfo, in_jetsLargeR, in_jets, truth_particles,eventWeight),"");
-
+  
   //if(!m_inputJets.empty()){
   //RETURN_CHECK("Report::execute()", m_jetKinematicPlots["all/jets"]->execute(in_jets, eventWeight), "");
   //RETURN_CHECK("Report::execute()", m_jetPlots["all/jets"]->execute(in_jets, eventWeight), "");
