@@ -23,12 +23,7 @@
 // xAH includes                                                                                 
 #include "xAODAnaHelpers/HelperFunctions.h"
 #include "xAODAnaHelpers/tools/ReturnCheck.h"
-
-// root includes                                                                                
-#include <TCanvas.h>
-#include <TVector3.h>
-#include <TH1F.h>
-// c++ includes                                                                                 
+                 
 #include <set>
 using namespace std;
 
@@ -61,6 +56,8 @@ WTag::ROC::ROC (std::string name) :
 WTag::ROC::~ROC () {}
 
 StatusCode WTag::ROC::initialize () {
+
+  std::cout << "Initializing ROC" << std::endl;
   // assign m_event and m_store                                          
   jetmass1 = book(m_name,"jetmass1","Leading Jet Mass (GeV)",650,0, 6500);
   jetmass2 = book(m_name,"jetmass2","Subleading Jet Mass (GeV)",650, 0 , 6500);
@@ -79,6 +76,7 @@ StatusCode WTag::ROC::initialize () {
 
 StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetContainer* in_jetsLargeR,const xAOD::JetContainer* in_jets, const xAOD::TruthParticleContainer* truth_particles, float eventWeight)
 {
+  std::cout <<"Executing ROC" << std::endl;
   //static SG::AuxElement::ConstAccessor<float> Wlabel("Wlabel");
 
   //if(m_debug) Info("execute()", "Calling execute...");
@@ -194,7 +192,7 @@ StatusCode WTag::ROC::execute (const xAOD::EventInfo* eventInfo,const xAOD::JetC
     }
   
   // dump information about the jets and met at least                          
-
+  std::cout << "Looped through all the jets, yay!" << std::endl;
 
   return StatusCode::SUCCESS;
 }

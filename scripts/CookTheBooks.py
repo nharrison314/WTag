@@ -62,7 +62,7 @@ if __name__ == "__main__":
   parser.add_argument('--skip', dest='skip_events', metavar='<n>', type=int, help='Number of events to skip at start.', default=0)
   parser.add_argument('-f', '--force', dest='force_overwrite', action='store_true', help='Overwrite previous directory if it exists.')
   parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=__version__))
-  parser.add_argument('--mode', dest='access_mode', type=str, metavar='{class, branch}', choices=['class', 'branch'], default='class', help='Run using branch access mode or class access mode. See TheAccountant/wiki/Access-Mode for more information')
+  parser.add_argument('--mode', dest='access_mode', type=str, metavar='{class, branch}', choices=['class', 'branch'], default='class', help='Run using branch access mode or class access mode. See WTag/wiki/Access-Mode for more information')
 
   # http://stackoverflow.com/questions/12303547/set-the-default-to-false-if-another-mutually-exclusive-argument-is-true
   group_driver = parser.add_mutually_exclusive_group()
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     with open(os.path.join(args.submit_dir, 'CookTheBooks.log'), 'w+') as f:
       f.write(' '.join(['[{0}]'.format(__version__), os.path.basename(sys.argv[0])] + sys.argv[1:]))
       f.write('\n')
-      f.write('Code:  https://github.com/kratsg/TheAccountant/tree/{0}\n'.format(__short_hash__))
+      f.write('Code:  https://github.com/kratsg/WTag/tree/{0}\n'.format(__short_hash__))
       f.write('Start: {0}\nStop:  {1}\nDelta: {2}\n\n'.format(SCRIPT_START_TIME.strftime("%b %d %Y %H:%M:%S"), SCRIPT_END_TIME.strftime("%b %d %Y %H:%M:%S"), SCRIPT_END_TIME - SCRIPT_START_TIME))
       f.write('job runner options\n')
       for opt in ['input_filename', 'submit_dir', 'num_events', 'skip_events', 'force_overwrite', 'input_from_file', 'input_from_DQ2', 'verbose', 'driver']:
