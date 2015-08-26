@@ -256,7 +256,7 @@ EL::StatusCode Report :: execute ()
   }
   
   //if(!m_inputLargeRJets.empty()){
-  if(!m_inputFFJets.empty()){
+  if(!m_inputFinalFatJets.empty()){
     std::cout << "NOT EMPTY" <<std::endl;
     for(auto jet: *in_ffjets){
     //for(auto jet: *in_jetsLargeR){
